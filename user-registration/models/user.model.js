@@ -20,6 +20,14 @@ var userSchema = new mongoose.Schema({
 	saltSecret: String
 });
 
+
+userSchema.method("toJSON", function() {
+    const { password, saltSecret, __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
+
+
 userSchema.pre('save', function(next){
 	bcrypt.genSalt(10, (err, salt) => {
 		bcrypt.hash(this.password, salt, (err, hash) => {

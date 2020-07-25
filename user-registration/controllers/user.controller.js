@@ -43,6 +43,26 @@ module.exports.getUser = (req, res, next) =>{
 
 }
 
+module.exports.getAllUser = async(req, res) =>{
+        console.log('inside get all user');
+        await User.find(function (err, docs) {
+        if (err){
+                console.log(err);
+                next(err);
+        }
+        else{
+                console.log("Result : ", docs);
+                if(docs == null){
+                        res.status(404).send(['user not found']);
+                }else{
+                        res.json(docs);
+                }
+        }
+        });
+
+}
+
+
 module.exports.deleteUser = (req, res, next) =>{
         console.log('inside delete user');
         User.remove({_id:req.params.id}, function (err, result) {
